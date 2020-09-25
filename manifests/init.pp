@@ -1,31 +1,19 @@
-# == Class: udev
+# @summary Manages the udev package and device rules
 #
-# Manages the udev package and device rules
-#
-# This class does not need to be declared in the manfiest when using the
+# This class does not need to be declared in the manifest when using the
 # udev::rule defined type.
 #
+# @example
+#   include udev
 #
-# === Parameters
-#
-# [*udev_log*]
-#
-# String. Possible values: 'err, 'info', 'debug'
-#
-# Default: 'err'
-#
-#
-# === Examples
-#
-# include udev
-#
+# @param udev_log Configure the log level.
+# @param config_file_replace Should we replace an existing /etc/udev/udev.conf file.
+# @param rules A hash with `udev::rule` rules.
 class udev(
-  $udev_log = $udev::params::udev_log,
-  $config_file_replace = $udev::params::config_file_replace,
-  $rules = $udev::params::rules,
+  Enum['err','info','debug'] $udev_log = $udev::params::udev_log,
+  Boolean $config_file_replace = $udev::params::config_file_replace,
+  Optional[Hash[String, Hash]] $rules = $udev::params::rules,
 ) inherits udev::params {
-  validate_re($udev_log, '^err$|^info$|^debug$')
-  validate_bool($config_file_replace)
 
   anchor { 'udev:begin': }
   -> package{ $udev::params::udev_package:

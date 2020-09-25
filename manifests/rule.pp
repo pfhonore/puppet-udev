@@ -1,49 +1,21 @@
-# == Define: udev::rule
-#
-# Manage a udev rules file and trigger udev to reload it's device rules upon
-# modification.
-#
-# === Parameters
+# @summary Manage a udev rules file and trigger udev to reload it's device rules upon modification
 #
 # Note that either the *content* or *source* parameter must be specified unless
 # *ensure* is 'absent' and that these parameters are mutually exclusive; you
 # can not specify both.
 #
-# [*ensure*]
+# @param ensure Controls the state of the udev rule file.
 #
-# String.  Possible values: 'present', 'absent'
+# @param content A literal string of the content that is to appear in udev rule file.  This
+#   parameter is mutually exclusive with *source*.
 #
-# Controls the state of the udev rule file.
-#
-# Default: 'present'
-#
-# [*content*]
-#
-# String.
-#
-# A literal string of the content that is to appear in udev rule file.  This
-# parameter is mutually exclusive with *source*.
-#
-# Default: undef
-#
-# [*source*]
-#
-# String.
-#
-# The URI to pull the udev rule file content from.  This parameter is mutually
-# exclusive with *content*.  Eg.  'puppet:///modules/mysite/myrule.rules'.
-#
-# Default: undef
-#
-#
-# === Example
-#
+# @param source The URI to pull the udev rule file content from.  This parameter is mutually
+#   exclusive with *content*.  Eg.  'puppet:///modules/mysite/myrule.rules'.
 define udev::rule(
-  $ensure  = present,
-  $content = undef,
-  $source  = undef
+  Enum['present', 'absent'] $ensure  = 'present',
+  Optional[String] $content = undef,
+  Optional[String] $source  = undef
 ) {
-  validate_re($ensure, '^present$|^absent$')
 
   include udev
 
@@ -56,16 +28,13 @@ define udev::rule(
     mode   => '0644',
     notify => Class['udev::udevadm::trigger'],
   }
-  if $source {
-    validate_string($source)
 
+  if $source {
     if $content {
       fail("${title}: parameters \$source and \$content are mutually exclusive")
     }
     $config_content = { source => $source }
   } elsif $content {
-    validate_string($content)
-
     if $source {
       fail("${title}: parameters \$source and \$content are mutually exclusive")
     }

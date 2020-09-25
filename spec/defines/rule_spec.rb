@@ -124,7 +124,7 @@ describe 'udev::rule', type: :define do
       it 'fails' do
         expect {
           is_expected.to contain_class('udev')
-        }.to raise_error(Puppet::Error, %r{does not match})
+        }.to raise_error(Puppet::Error, %r{expects a match for.*'absent', 'present'})
       end
     end
 
@@ -135,7 +135,7 @@ describe 'udev::rule', type: :define do
       it 'fails' do
         expect {
           is_expected.to contain_class('udev')
-        }.to raise_error(Puppet::Error, %r{is not a string})
+        }.to raise_error(Puppet::Error, %r{expects a value of type Undef or String, got Boolean})
       end
     end
 
@@ -146,7 +146,7 @@ describe 'udev::rule', type: :define do
       it 'fails' do
         expect {
           is_expected.to contain_class('udev')
-        }.to raise_error(Puppet::Error, %r{is not a string})
+        }.to raise_error(Puppet::Error, %r{expects a value of type Undef or String, got Boolean})
       end
     end
   end

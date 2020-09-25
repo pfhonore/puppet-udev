@@ -63,7 +63,7 @@ describe 'udev', type: :class do
       it 'fails' do
         expect {
           is_expected.to contain_class('udev')
-        }.to raise_error(Puppet::Error, %r{does not match})
+        }.to raise_error(Puppet::Error, %r{expects a match for.*'debug', 'err', 'info'})
       end
     end
 
@@ -73,7 +73,7 @@ describe 'udev', type: :class do
       it 'fails' do
         expect {
           is_expected.to contain_class('udev')
-        }.to raise_error(Puppet::Error, %r{is not a boolean})
+        }.to raise_error(Puppet::Error, %r{expects a Boolean value})
       end
     end
 
