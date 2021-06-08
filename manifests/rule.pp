@@ -48,7 +48,7 @@ define udev::rule(
     }
   }
 
-  $config = merge($config_base, $config_content)
+  $config = $config_base + $config_content
 
   create_resources( 'file', { "/etc/udev/rules.d/${title}" => $config } )
 
