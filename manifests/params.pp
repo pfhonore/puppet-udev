@@ -6,7 +6,6 @@ class udev::params {
   $config_file_replace = true
 
   $udev_log     = 'err'
-  $udevadm_path = '/sbin'
   $rules        = undef
 
   case $::osfamily {
@@ -14,8 +13,16 @@ class udev::params {
       $udev_package    = 'udev'
       $udevlogpriority = 'udevadm control --log-priority'
       $udevtrigger     = 'udevadm trigger --action=change'
+
+      if (versioncmp($::operatingsystemmajrelease, '11') >= 0) {
+        $udevadm_path = '/usr/bin'
+      } else {
+        $udevadm_path = '/sbin'
+      }
     }
     'redhat': {
+      $udevadm_path = '/sbin'
+
       if $::operatingsystem == 'Fedora' {
         if (versioncmp($::operatingsystemmajrelease,'20') >=0) {
           $udev_package    = 'systemd'
@@ -26,6 +33,8 @@ class udev::params {
           fail("Module ${module_name} might not be supported on Fedora release ${::operatingsystemmajrelease}")
         }
       } else {
+        $udevadm_path = '/sbin'
+
         case $::operatingsystemmajrelease {
           '5': {
             $udev_package    = 'udev'
