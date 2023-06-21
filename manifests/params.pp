@@ -33,7 +33,6 @@ class udev::params {
         }
       } else {
         $udevadm_path = '/sbin'
-
         case $::operatingsystemmajrelease {
           '5': {
             $udev_package    = 'udev'
