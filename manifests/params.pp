@@ -21,9 +21,8 @@ class udev::params {
       }
     }
     'redhat': {
-      $udevadm_path = '/sbin'
-
       if $::operatingsystem == 'Fedora' {
+        $udevadm_path = '/sbin'
         if (versioncmp($::operatingsystemmajrelease,'20') >=0) {
           $udev_package    = 'systemd'
           $udevtrigger     = 'udevadm trigger'
@@ -46,7 +45,7 @@ class udev::params {
             $udevtrigger     = 'udevadm trigger --action=change'
             $udevlogpriority = 'udevadm control --log-priority'
           }
-          '7', '8': {
+          '7', '8', '9': {
             $udev_package    = 'systemd'
             $udevtrigger     = 'udevadm trigger --action=change'
             $udevlogpriority = 'udevadm control --log-priority'
